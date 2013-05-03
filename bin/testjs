@@ -4,9 +4,8 @@ var path = require("path"),
     ascli = require("ascli").app("test"),
     Suite = require(path.join(__dirname, '..', 'test.js'));
 
-var getopt = ascli.opt(process.argv);
-var argv = getopt.argv;
-var opt = getopt.opt;
+var argv = ascli.argv;
+var opt = ascli.opt;
 
 if (opt.nocolors || opt.nc) {
     ascli.colour.mode = "none";

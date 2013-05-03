@@ -128,7 +128,7 @@ module.exports = (function() {
      * @expose
      */
     Suite.banner = function() {
-        ascli.banner("test".green.bold, "v"+pkg['version']+(" » "+pkg['description']).grey.bold);
+        ascli.banner("test".green.bold, "js".green.bold+" »".white.bold+"                                                          "+("v"+pkg['version']).grey.bold);
     };
 
     /**
@@ -145,7 +145,7 @@ module.exports = (function() {
                 name = null;
             }
         }
-        name = typeof name != 'undefined' ? (""+name).replace(/^dojo\-/, '') : "main";
+        name = typeof name != 'undefined' ? ""+name : "main";
         var suite = new Suite(tests, name);
         if (!silent) Suite.banner();
         // TODO: Not super important but Cygwin fails to report anything below but the final message?
