@@ -1,7 +1,7 @@
 {
     "name": "testjs",
     "description": "No fancy crap, just testing like a man.",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "author": "Daniel Wirtz <dcode@dcode.io>",
     "repository": {
         "type": "git",
@@ -22,6 +22,6 @@
     "devDependencies": {},
     "license": "Apache-2.0",
     "scripts": {
-        "test": "node tests/run.js"
+        "test": "node ./tests/run.js"
     }
 }

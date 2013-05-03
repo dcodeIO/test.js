@@ -251,7 +251,7 @@ module.exports = (function() {
                 if (!suite.silent)  console.log("+".green+" "+test['name'].replace(/\./g, ".".grey.bold)+stats(this, hrtime()-inst.start));
                 suite.ok.push(test);
                 process.removeAllListeners("exit");
-                setImmediate(next);
+                typeof setImmediate === 'function' ? setImmediate(next) : setTimeout(next, 0);
             }
 
             /**
@@ -267,7 +267,7 @@ module.exports = (function() {
                 test['error'] = e;
                 suite.failed.push(test);
                 process.removeAllListeners("exit");
-                setImmediate(next);
+                typeof setImmediate === 'function' ? setImmediate(next) : setTimeout(next, 0);
             }
 
             var inst = new Test(suite, test['name']);
@@ -353,6 +353,9 @@ module.exports = (function() {
     
     /** @private */
     var Test = Suite.Test;
+    
+    // Expose ascli
+    Suite.ascli = ascli;
 
     return Suite;
     

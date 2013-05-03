@@ -1,7 +1,6 @@
 ![test.js](https://raw.github.com/dcodeIO/test.js/master/test.png)
 ---------
-No fancy crap, just testing like a man. Prints nothing else than the information you actually need and does nothing more
-than wrapping node's assert module.
+Prints nothing else than the information you actually need and does nothing more than wrapping node's assert module.
 
 * Small footprint, minimal dependencies
 * Non-utf8 and Windows terminal approved
