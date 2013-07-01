@@ -26,13 +26,14 @@ module.exports = (function() {
     // core
     var path = require("path"),
         assert = require("assert"),
-        domain = require("domain"),
         ascli = require("ascli").app("test"),
         ok = ascli.ok,
         fail = ascli.fail,
 
     // dojo
         pkg = require(path.join(__dirname, "package.json"));
+
+    var domain = null; try { domain = require("domain"); } catch (e) {}
 
     /**
      * Parses a stack trace.
@@ -274,13 +275,17 @@ module.exports = (function() {
             inst.done = done;
             inst.start = hrtime();
             try {
-                var d = domain.create();
-                d.on("error", function(e) {
-                    fail(e);
-                });
-                d.run(function() {
+                if (domain) {
+                    var d = domain.create();
+                    d.on("error", function(e) {
+                        fail(e);
+                    });
+                    d.run(function() {
+                        test['test'](inst);
+                    });
+                } else {
                     test['test'](inst);
-                });
+                }
             } catch (e) {
                 fail(e);
             }
@@ -326,7 +331,7 @@ module.exports = (function() {
             }(assert[i]);
         }
     }
-
+    
     /**
      * Tests if a value evaluates to false.
      * @param {*} value Value

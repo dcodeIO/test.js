@@ -65,7 +65,15 @@ Suite.run({
 Assertions
 ----------
 All of [node's assert](http://nodejs.org/api/assert.html) (just replace `assert` through `test`) plus `test.notOk(...)`
-as a negated `ok`. There is also a `test.log(...)` for logging straight to the test console.
+as a negated `ok`.
+
+* `test#ok(actual)` / `test#notOk(actual)` / `test#ifError(actual)`
+* `test#equal(actual, expected)` / `test#notEqual(actual, notExpected)`
+* `test#deepEqual(actual, expected)` / `test#notDeepEqual(actual, notExpected)`
+* `test#strictEqual(actual, expected)` / `test#notStrictEqual(actual, notExpected)`
+* `test#throws(blockFunction[, classRegExpOrValidationFunction])` / `test#doesNotThrow(blockFunction)`
+
+There is also a `test#log(...)` for logging straight to the test console.
 
 Self-explaining examples
 ------------------------
@@ -75,6 +83,13 @@ Self-explaining examples
 When typing `test` or `testjs` in a terminal, `tests/suite.js` will be run. Also supports running runners:
 `test tests/run.js` or custom / other unit tests under the condition that the runner (here: `run.js`) does not export
 anything. If it does, whatever it exports will be run.
+
+Interoperability
+----------------
+test.js is partially interoperable with nodeunit. There is no setUp/tearDown however and there are no aliases for
+things like `equal`, which is for example aliased as `equals` in nodeunit.
+
+test.js including dependencies is about 100kb while nodeunit is about 16mb.
 
 Command line options
 --------------------

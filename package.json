@@ -1,7 +1,7 @@
 {
     "name": "testjs",
     "description": "No fancy crap, just testing like a man.",
-    "version": "0.2.2",
+    "version": "0.2.3",
     "author": "Daniel Wirtz <dcode@dcode.io>",
     "repository": {
         "type": "git",
