@@ -79,8 +79,12 @@ module.exports = (function() {
      * @returns {number} Microseconds (1 μs = 10^6 s)
      */
     function hrtime() {
-        var hr = process.hrtime();
-        return Math.round(hr[0]*1000000 + hr[1]/1000);
+        if (process.hrtime) {
+            var hr = process.hrtime();
+            return Math.round(hr[0]*1000000 + hr[1]/1000);
+        } else {
+            return new Date().getTime()*1000;
+        }
     }
 
     /**
