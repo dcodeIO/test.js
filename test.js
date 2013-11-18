@@ -49,12 +49,13 @@ module.exports = (function() {
             head = head.substring(0, p).red.bold+head.substring(p).white.bold;
         }
         res.push("   "+head);
-        for (var i=2; i<lines.length; i++) { // skip head and wrapper
+        for (var i=1; i<lines.length; i++) { // skip head and wrapper
             var line = " "+lines[i];
-            if (/node_modules[\\/]test[\\/]test\.js|Function\.Module\.runMain \(module\.js:/.test(line)) {
-                break;
+            if (/ \(\w+\.js:/.test(line)) {
+                break; // Strip internal stack in node where file names start having no path
             }
-            res.push(line.replace(/(Object\.module\.exports\.)|(\[as test\] )/g, ''));
+            res.push(line);
+            // res.push(line.replace(/(Object\.module\.exports\.)|(\[as test\] )/g, ''));
         }
         return res.join('\n');
     }
@@ -133,7 +134,9 @@ module.exports = (function() {
      * @expose
      */
     Suite.banner = function() {
-        ascli.banner("test".green.bold, "js".green.bold+" »".white.bold+"                                                          "+("v"+pkg['version']).grey.bold);
+        var ver = "test.js v"+pkg['version'];
+        while (ver.length < 68) ver = " "+ver;
+        ascli.banner("test".green.bold, ver.grey.bold);
     };
 
     /**

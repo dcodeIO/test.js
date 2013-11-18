@@ -6,7 +6,7 @@ Prints nothing else than the information you actually need and does nothing more
 * Non-utf8 and Windows terminal approved
 * Allows asynchronous testing
 * Allows modular tests by just assembling data structures
-* API and Cli (just `testjs` or `test` if you like)
+* API and Cli (just `testjs`)
 * Available through [npm](https://npmjs.org/package/testjs): `npm -g install testjs`
 
 <p align="center">
