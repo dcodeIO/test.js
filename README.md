@@ -80,8 +80,8 @@ Self-explaining examples
 * [tests/suite.js](https://github.com/dcodeIO/test.js/blob/master/tests/suite.js) - test suite as a module
 * [tests/run.js](https://github.com/dcodeIO/test.js/blob/master/tests/run.js) - runs it through the API
 
-When typing `test` or `testjs` in a terminal, `tests/suite.js` will be run. Also supports running runners:
-`test tests/run.js` or custom / other unit tests under the condition that the runner (here: `run.js`) does not export
+When typing `testjs` in a terminal, `tests/suite.js` will be run. Also supports running runners:
+`testjs tests/run.js` or custom / other unit tests under the condition that the runner (here: `run.js`) does not export
 anything. If it does, whatever it exports will be run.
 
 Interoperability
