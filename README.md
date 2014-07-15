@@ -1,12 +1,14 @@
 ![test.js](https://raw.github.com/dcodeIO/test.js/master/test.png)
 ---------
-Prints nothing else than the information you actually need and does nothing more than wrapping node's assert module.
+**test.js** is a compact testing module for node.js that simply wraps node's assert module and generates pretty printed
+output.
 
 * Small footprint, minimal dependencies
 * Non-utf8 and Windows terminal approved
 * Allows asynchronous testing
 * Allows modular tests by just assembling data structures
-* API and Cli (just `testjs`)
+* Simple API and Cli (just `testjs`)
+* Emphasis on timers
 * Available through [npm](https://npmjs.org/package/testjs): `npm -g install testjs`
 
 <p align="center">
@@ -87,9 +89,8 @@ anything. If it does, whatever it exports will be run.
 Interoperability
 ----------------
 test.js is partially interoperable with nodeunit. There is no setUp/tearDown however and there are no aliases for
-things like `equal`, which is for example aliased as `equals` in nodeunit.
-
-test.js including dependencies is about 100kb while nodeunit is about 16mb.
+things like `equal`, which is for example aliased as `equals` in nodeunit. However, test.js including dependencies is
+about 100kb while nodeunit is about 16mb.
 
 Command line options
 --------------------

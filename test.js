@@ -42,7 +42,7 @@ module.exports = (function() {
      * @private
      */
     function parseStack(stack) {
-        var lines = stack.split('\n');
+        var lines = stack ? stack.split('\n') : [];
         var res = [];
         var head = lines[0], p;
         if ((p = head.indexOf(":")) >= 0) {
