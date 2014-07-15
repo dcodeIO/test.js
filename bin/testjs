@@ -4,23 +4,21 @@ var path = require("path"),
     ascli = require("ascli").app("test"),
     Suite = require(path.join(__dirname, '..', 'test.js'));
 
-var argv = ascli.argv;
-var opt = ascli.opt;
+var argv = ascli.argv,
+    opt = ascli.opt;
 
-if (opt.nocolors || opt.nc) {
+if (opt.nocolors || opt.nc)
     ascli.colour.mode = "none";
-}
-var silent = !!(opt.silent || opt.s || false);
 
-var pkg = {};
+var silent = !!(opt.silent || opt.s || false),
+    pkg = {};
 try { pkg = require(path.join(process.cwd(), 'package.json')); } catch (e) { }
 
 var file;
-if (argv.length == 0) {
+if (argv.length == 0)
     file = path.resolve("tests", "suite.js");
-} else {
+else
     file = path.resolve(argv[0]);
-}
 var name = opt.name || opt.n || pkg['name'] || path.basename(file).replace(/\.js$/, '');
 var suite;
 try {

@@ -23,14 +23,11 @@
 /** @expose */
 module.exports = (function() {
     
-    // core
     var path = require("path"),
         assert = require("assert"),
         ascli = require("ascli").app("test"),
         ok = ascli.ok,
         fail = ascli.fail,
-
-    // dojo
         pkg = require(path.join(__dirname, "package.json"));
 
     var domain = null; try { domain = require("domain"); } catch (e) {}
@@ -42,19 +39,19 @@ module.exports = (function() {
      * @private
      */
     function parseStack(stack) {
-        var lines = stack ? stack.split('\n') : [];
-        var res = [];
-        var head = lines[0], p;
+        var lines = stack ? stack.split('\n') : [],
+            res = [],
+            head = lines[0],
+            p, l;
         if ((p = head.indexOf(":")) >= 0) {
             head = head.substring(0, p).red.bold+head.substring(p).white.bold;
         }
         res.push("   "+head);
         for (var i=1; i<lines.length; i++) { // skip head and wrapper
-            var line = " "+lines[i];
-            if (/ \(\w+\.js:/.test(line)) {
+            l = " "+lines[i];
+            if (/ \(\w+\.js:/.test(l))
                 break; // Strip internal stack in node where file names start having no path
-            }
-            res.push(line);
+            res.push(l);
             // res.push(line.replace(/(Object\.module\.exports\.)|(\[as test\] )/g, ''));
         }
         return res.join('\n');
@@ -69,9 +66,8 @@ module.exports = (function() {
      */
     function pad(s, len) {
         s = s+"";
-        while (s.length < len) {
+        while (s.length < len) 
             s = " "+s;
-        }
         return s;
     }
 
@@ -83,9 +79,8 @@ module.exports = (function() {
         if (process.hrtime) {
             var hr = process.hrtime();
             return Math.round(hr[0]*1000000 + hr[1]/1000);
-        } else {
-            return new Date().getTime()*1000;
         }
+        return new Date().getTime()*1000;
     }
 
     /**
@@ -122,11 +117,9 @@ module.exports = (function() {
     Suite.prototype.summarize = function(startTime) {
         var total = this.ok.length + this.failed.length,
             taken = hrtime() - startTime;
-        if (this.failed.length > 0) {
+        if (this.failed.length > 0)
             return this.failed.length+" of "+total+" failed ("+(taken/1000).toFixed(3)+" ms "+this.assertions+" assertions)";
-        } else {
-            return total+" tests ("+(taken/1000).toFixed(3)+" ms, "+this.assertions+" assertions)";
-        }
+        return total+" tests ("+(taken/1000).toFixed(3)+" ms, "+this.assertions+" assertions)";
     };
 
     /**
@@ -135,7 +128,8 @@ module.exports = (function() {
      */
     Suite.banner = function() {
         var ver = "test.js v"+pkg['version'];
-        while (ver.length < 68) ver = " "+ver;
+        while (ver.length < 68)
+            ver = " "+ver;
         ascli.banner("test".green.bold, ver.grey.bold);
     };
 
@@ -147,23 +141,20 @@ module.exports = (function() {
      * @expose
      */
     Suite.run = function(tests, name, silent) {
-        if (typeof silent == 'undefined') {
-            if (typeof name == 'boolean') {
-                silent = name;
-                name = null;
-            }
-        }
+        if (typeof silent === 'undefined' && typeof name === 'boolean')
+            silent = name,
+            name = null;
         name = typeof name != 'undefined' ? ""+name : "main";
         var suite = new Suite(tests, name);
-        if (!silent) Suite.banner();
+        if (!silent)
+            Suite.banner();
         // TODO: Not super important but Cygwin fails to report anything below but the final message?
         var startTime = hrtime();
         suite.run(silent, function() {
-            if (suite.failed.length > 0) {
+            if (suite.failed.length > 0)
                 !silent ? fail(suite.summarize(startTime), 'test', suite.failed.length) : process.exit(suite.failed.length);
-            } else {
+            else
                 !silent ? ok(suite.summarize(startTime), 'test') : process.exit(0);
-            }
         });
     };
 
@@ -174,26 +165,24 @@ module.exports = (function() {
      * @expose
      */
     Suite.prototype.run = function(silent, callback) {
-        if (typeof silent == 'function') {
-            callback = silent;
+        if (typeof silent == 'function')
+            callback = silent,
             silent = false;
-        }
         this.assertions = 0;
         this.silent = !!silent;
         
         // Wrap native assert
-        for (var i in assert) {
-            if (assert.hasOwnProperty(i) && !(i in this)) this[i] = assert[i];
-        }
+        for (var i in assert)
+            if (assert.hasOwnProperty(i) && !(i in this))
+                this[i] = assert[i];
 
         // Generate a prefix based on nesting
         /** @type {string} */
-        var prefix = "";
-        var ptr = this.parent;
-        while (ptr !== null) {
-            prefix = ptr.name+' - '+prefix;
+        var prefix = "",
+            ptr = this.parent;
+        while (ptr !== null)
+            prefix = ptr.name+' - '+prefix,
             ptr = ptr.parent;
-        }
 
         /** @type {Array.<{name: string, test: function(Test)}>} */
         var tests = [];
@@ -207,15 +196,12 @@ module.exports = (function() {
          * @private
          */
         function lineUp(k, v) {
-            if (typeof v == 'function') {
+            if (typeof v == 'function')
                 tests.push({'name': k, 'test': v});
-            } else {
-                if (v) { // Might be set to null
-                    var ks = Object.keys(v);
-                    for (var i=0; i<ks.length; i++) {
-                        lineUp(k+'.'+ks[i], v[ks[i]]);
-                    }
-                }
+            else if (v) { // Might be set to null
+                var ks = Object.keys(v);
+                for (var i=0; i<ks.length; i++)
+                    lineUp(k+'.'+ks[i], v[ks[i]]);
             }
         }
         lineUp(this.name, this.tests);
@@ -229,9 +215,8 @@ module.exports = (function() {
          */
         function stats(test, taken) {
             var space = " ";
-            for (var i=3+test.testName.length; i<46; i++) {
+            for (var i=3+test.testName.length; i<46; i++)
                 space += " ";
-            }
             return space+pad((taken/1000).toFixed(3), 10)+" ms "+pad(test.count, 6)+" assertions ";
         }
 
@@ -242,9 +227,8 @@ module.exports = (function() {
          */
         function run(test) {
             var space = " ";
-            for (var i=3+test['name'].length; i<50; i++) {
+            for (var i=3+test['name'].length; i<50; i++)
                 space += " ";
-            }
 
             process.on("exit", function() {
                 fail(new Error("test.done() has not been called"));
@@ -256,7 +240,8 @@ module.exports = (function() {
              */
             function done() {
                 suite.assertions += inst.count;
-                if (!suite.silent)  console.log("+".green+" "+test['name'].replace(/\./g, ".".grey.bold)+stats(this, hrtime()-inst.start));
+                if (!suite.silent)
+                    console.log("+".green+" "+test['name'].replace(/\./g, ".".grey.bold)+stats(this, hrtime()-inst.start));
                 suite.ok.push(test);
                 process.removeAllListeners("exit");
                 typeof setImmediate === 'function' ? setImmediate(next) : setTimeout(next, 0);
@@ -268,10 +253,9 @@ module.exports = (function() {
              */
             function fail(e) {
                 suite.assertions += inst.count;
-                if (!suite.silent) {
-                    console.log("x".red.bold+" "+test['name'].white.bold+stats(inst, hrtime()-inst.start));
+                if (!suite.silent)
+                    console.log("x".red.bold+" "+test['name'].white.bold+stats(inst, hrtime()-inst.start)),
                     console.log('\n'+parseStack(e.stack)+"\n");
-                }
                 test['error'] = e;
                 suite.failed.push(test);
                 process.removeAllListeners("exit");
@@ -290,9 +274,8 @@ module.exports = (function() {
                     d.run(function() {
                         test['test'](inst);
                     });
-                } else {
+                } else
                     test['test'](inst);
-                }
             } catch (e) {
                 fail(e);
             }
@@ -304,11 +287,10 @@ module.exports = (function() {
          */
         function next() {
             var t = tests.shift();
-            if (t) {
+            if (t)
                 run(t);
-            } else {
-                if (callback) callback(suite);
-            }
+            else if (callback)
+                callback(suite);
         }
 
         // Start with the first
@@ -328,16 +310,14 @@ module.exports = (function() {
     };
 
     // Actually wraps assert
-    for (var i in assert) {
-        if (assert.hasOwnProperty(i)) {
+    for (var i in assert)
+        if (assert.hasOwnProperty(i))
             Suite.Test.prototype[i] = function(func) {
                 return function() {
                     this.count++;
                     func.apply(this, arguments);
                 }
             }(assert[i]);
-        }
-    }
     
     /**
      * Tests if a value evaluates to false.
@@ -348,7 +328,8 @@ module.exports = (function() {
      */
     Suite.Test.prototype.notOk = function(value, message) {
         this.count++;
-        if (!!value) assert.fail(value, true, message, '!=', assert.ok);
+        if (!!value)
+            assert.fail(value, true, message, '!=', assert.ok);
     };
 
     /**
@@ -357,7 +338,8 @@ module.exports = (function() {
      * @expose
      */
     Suite.Test.prototype.log = function(var_args) {
-        if (this.suite.silent) return;
+        if (this.suite.silent)
+            return;
         var args = ['i '.cyan+this.testName+" >".cyan];
         args.push.apply(args, arguments);
         console.log.apply(console, args);
