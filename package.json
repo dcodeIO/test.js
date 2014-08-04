@@ -1,7 +1,7 @@
 {
     "name": "testjs",
     "description": "A compact testing module for node.js.",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "author": "Daniel Wirtz <dcode@dcode.io>",
     "repository": {
         "type": "git",

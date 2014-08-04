@@ -39,7 +39,9 @@ module.exports = (function() {
      * @private
      */
     function parseStack(stack) {
-        var lines = stack ? stack.split('\n') : [],
+        if (!stack)
+            return "";
+        var lines = stack.split('\n'),
             res = [],
             head = lines[0],
             p, l;
@@ -254,8 +256,9 @@ module.exports = (function() {
             function fail(e) {
                 suite.assertions += inst.count;
                 if (!suite.silent)
-                    console.log("x".red.bold+" "+test['name'].white.bold+stats(inst, hrtime()-inst.start)),
-                    console.log('\n'+parseStack(e.stack)+"\n");
+                    console.log("x".red.bold+" "+test['name'].white.bold+stats(inst, hrtime()-inst.start)+'\n'),
+                    console.log(e.message),
+                    console.log(parseStack(e.stack)+"\n");
                 test['error'] = e;
                 suite.failed.push(test);
                 process.removeAllListeners("exit");
